@@ -1,0 +1,152 @@
+---
+title: "DSC520 Week7 Exercise 7.2"
+author: "Anjani Bonda"
+date: January 30th 2022
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Part 1 - Assignment05
+
+```{r}
+## Set the working directory to the root of your DSC 520 directory
+setwd("/Users/anjanibonda/DSC520/dsc520")
+
+## Load the `data/r4ds/heights.csv` to
+heights_df <- read.csv("data/r4ds/heights.csv")
+head(heights_df)
+
+## Using `cor()` compute correlation coefficients for
+## height vs. earn
+cor(heights_df$height, heights_df$earn)
+## age vs. earn
+cor(heights_df$age, heights_df$earn)
+## ed vs. earn
+cor(heights_df$ed, heights_df$earn)
+
+## Spurious correlation
+## The following is data on US spending on science, space, and technology in millions of today's dollars
+## and Suicides by hanging strangulation and suffocation for the years 1999 to 2009
+## Compute the correlation between these variables
+tech_spending <- c(18079, 18594, 19753, 20734, 20831, 23029, 23597, 23584, 25525, 27731, 29449)
+suicides <- c(5427, 5688, 6198, 6462, 6635, 7336, 7248, 7491, 8161, 8578, 9000)
+cor(tech_spending, suicides)
+## Correlation using other methods
+cor(tech_spending, suicides, method = "kendall")
+cor(tech_spending, suicides, method = "spearman")
+```
+
+# Part 2 - Student Survey
+
+# i: Use R to calculate the covariance of the Survey variables and provide an explanation of why you would use this calculation and what the results indicate.
+
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+head(studentsurvey_df)
+cov(studentsurvey_df)
+```
+Covariance is generally used to determine relationship between variables. A positive or negative covariance
+indicates whether the variables have strong or weak relationship with each other respectively.
+
+## Conclusion:
+1. "TimeTV" and "Happiness" have a strong relation with positive covariance and more close to each other (114.377). 
+2. "TimeReading" and "TimeTV" have a weak relation with negative covariance and opposite to each other (-20.363).
+
+# ii: Examine the Survey data variables. What measurement is being used for the variables? Explain what effect changing the measurement being used for the variables would have on the covariance calculation. Would this be a problem? Explain and provide a better alternative if needed.
+
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+str(studentsurvey_df)
+```
+
+Gender is ideally considered a categorical variable and the numerical values here doesn't really indicate
+what value represents which gender. 
+Also, it looks like TimeTV is in minutes, while TimeReading is in hours which indicates that the units are not consistent leading to incorrect results. 
+
+A better alternative is to make the units consistent as either hours/minutes for TimeTV and TimeReading, 
+Gender to be a categorical variable with values of either Male/Female corresponding to 1/0 and Happiness possibly represented in percentage.
+
+# iii. Choose the type of correlation test to perform, explain why you chose this test, and make a prediction if the test yields a positive or negative correlation?
+
+I will choose simple correlation tests between two variables - TimeTV and Happiness and TimeReading and TimeTV,
+Since these variables seem to have some sort of relation with each other.
+
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+cor.test(studentsurvey_df$TimeTV, studentsurvey_df$Happiness)
+cor.test(studentsurvey_df$TimeReading, studentsurvey_df$TimeTV)
+```
+
+## Conclusion: 
+Above test results indicate that TimeTV and Happiness have a strong correlation (0.63) compared to TimeReading 
+and TimeTV which has a weak/opposite correlation (-0.88) with each other.
+
+# iv: Perform a correlation analysis of:
+## 
+1. All variables
+2. A single correlation between two a pair of the variables
+3. Repeat your correlation test in step 2 but set the confidence interval at 99%
+4. Describe what the calculations in the correlation matrix suggest about the relationship between the variables. Be specific with your explanation.
+
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+# correlation of all variables
+cor(studentsurvey_df)
+# choosing TimeReading vs Happiness
+cor(studentsurvey_df$TimeReading, studentsurvey_df$Happiness)
+# with confidence interval of 99%
+cor.test(studentsurvey_df$TimeReading, studentsurvey_df$Happiness, conf.level = 0.99)
+```
+## Conclusion:
+TimeReading has a negative correlation with Happiness. This means as TimeReading goes up, Happiness goes down and vice versa. 
+TimeTV and Happiness are positively correlated. This suggests that more TimeTV leads to more happiness and vice-versa.
+TimeTV and TimeReading are negatively correlated as well. 
+Gender doesn't seem to have much impact as all of those values are pretty low.
+
+# v: Calculate the correlation coefficient and the coefficient of determination, describe what you conclude about the results.
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+corcoff <- cor(studentsurvey_df)
+coffd <- corcoff ^ 2
+coffd
+```
+## Conclusion: 
+The coefficent of determination values in this case is between 0 and 1 which shows its a good fit, 
+As the values between 0 and 1 indicates the strength of linear regression model.
+
+# vi: Based on your analysis can you say that watching more TV caused students to read less? Explain.
+Based on the findings, we can conclude that watching more tv leads to less reading.
+Both TimeTV and TimeReading are negatively correlated variables, and with an coefficient of determination
+value nearing 1, we can say that there is a solid goodness of fit. 
+Based on above points, it is safe to say that when tv time goes up,reading time goes down and vice-versa.
+
+# vii: Pick three variables and perform a partial correlation, documenting which variable you are “controlling”. Explain how this changes your interpretation and explanation of the results.
+```{r}
+setwd("/Users/anjanibonda/DSC520/dsc520")
+studentsurvey_df <- read.csv("data/student-survey.csv")
+library('ppcor')
+pcor.test(studentsurvey_df$TimeReading, studentsurvey_df$TimeTV,studentsurvey_df$Happiness)
+```
+
+## Conclusion: 
+A partial correlation between TimeReading, TimeTV with Happiness (controlling variable) is being performed above. The TimeReading and TimeTV appear to be negatively correlated and that low p-value suggests the same.
+Therefore, we can conclude that TimeTV and TimeReading are negatively correlated.
+
+# References
+
+1. Lander, J. P. 2014. R for Everyone: Advanced Analytics and Graphics. Addison-Wesley Data and Analytics Series. Addison-Wesley. https://books.google.com/books?id=3eBVAgAAQBAJ
+
+2. R Core Team. 2020. R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/
+
+3. https://www.rdocumentation.org/packages/ppcor/versions/1.1/topics/pcor.test
