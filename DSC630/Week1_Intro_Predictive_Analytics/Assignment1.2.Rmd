@@ -1,0 +1,148 @@
+---
+title: "Assignment1.2"
+author: "Anjani Bonda"
+date: "9/3/2022"
+output: pdf_document
+---
+
+```{r eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This assignment is a refresher of data analysis and visualization using Python and/or R. Find a data set that interests you and has appropriate data to create some interesting visualizations. A few good sources for finding datasets include Kaggle, UCI ML Repository, and the US Bureau of Labor Statistics. Following steps are performed using R.
+
+### Step1: Write a summary of your data and identify at least two questions to explore visually with your data.
+#### The dataset is a series report chosen from BLS (Bureau of Labor Statistics) based on American Time Use Survey.
+It essentially has data from 2011-2021 with an Estimate of Average hours per day (working and work-related activities
+including travel). The age group considered here is 15 years and over (both men and women) and for all days.
+
+####Questions I would like to explore:
+1. Check if Men and Women have similar proportions/weightage.
+2. Check the distribution of  'Estimate' values (avg hrs per day) if even or abnorm
+
+#### Import the Data saved from BLS data store
+```{r eval=TRUE, echo=FALSE}
+setwd("/Users/anjanibonda/Data-Science/DSC630/Week1_Intro_Predictive_Analytics/")
+library('magrittr') 
+men <- 'SeriesReport-20220904014401_fcccdd.xlsx'
+women <- 'SeriesReport-20220904014442_b1718f.xlsx'
+
+# Function for data prep
+prepdata <- function(path, index, datarow){
+# read excel data file
+  df <- xlsx::read.xlsx(path,
+                        sheetIndex = index,
+                        stringsAsFactors = FALSE)
+  
+# gender variable
+  gender <- df %>% 
+    dplyr::filter(.[,1]=='Gender:') %>% 
+    as.character() %>% 
+    .[2]
+  
+# type variable
+  type <- df %>% 
+    dplyr::filter(.[,1]=='Type of estimate:') %>% 
+    as.character() %>% 
+    .[2]
+  
+# activity variable
+  activity <- df %>% 
+    dplyr::filter(.[,1]=='Activity:') %>% 
+    as.character() %>% 
+    .[2]
+  
+# remove unwanted rows
+  df <- df %>% 
+    dplyr::slice(datarow:nrow(.))
+  
+# set first row as column name and remove first row
+  colnames(df) <- as.character(unlist(df[1,]))
+  df <- df[-1, ]
+  
+# add data
+  df <- df %>% 
+    dplyr::mutate(Gender = gender,
+                  Type = type,
+                  Activity = activity)
+  
+  return(df)
+}
+```
+
+#### merging men and women data to create one file for timeuse analysis
+```{r eval=TRUE, echo=FALSE}
+timeuse <- prepdata(men, 1, 11) %>% 
+  dplyr::bind_rows(prepdata(women, 1, 11)) %>% 
+  dplyr::mutate(Estimate = as.numeric(Estimate),
+                `Standard Error` = as.numeric(`Standard Error`))
+```
+
+
+#### Remove missing values and validate data structure
+```{r eval=TRUE, echo=FALSE}
+show(timeuse)
+complete.cases(timeuse)
+timeuse <- timeuse[complete.cases(timeuse),]
+show(timeuse)
+str(timeuse)
+```
+
+### Step2: Create a histogram or bar graph from your data
+
+#### Histogram of the continuous variables (Estimate and Standard Error)
+```{r eval=TRUE, echo=FALSE}
+DataExplorer::plot_histogram(timeuse)
+```
+
+### Step3: Create a boxplot from your data.
+
+```{r eval=TRUE, echo=FALSE}
+# set output figure size
+options(repr.plot.width = 3, repr.plot.height = 2)
+# Boxplot of the two continuous variables
+DataExplorer::plot_boxplot(timeuse, by = 'Estimate')
+```
+
+
+### Step4: Create a bivariate plot from your data.
+
+```{r eval=TRUE, echo=FALSE}
+plot(timeuse$Estimate, timeuse$`Standard Error`, pch=16, col='steelblue',
+     main='Estimate vs Standard Error',
+     xlab='Estimate', ylab='Standard Error')
+```
+
+### Step5: Create any additional visualizations that will help to answer the question(s) you want to answer.
+
+```{r eval=TRUE, echo=FALSE}
+# density plot of estimate
+par(mar=c(0,1,2,3))
+plot(density(timeuse$Estimate) , main='Density of Estimates' , xlab="", ylim=c(0,2) , xaxt="n", las=1 , col="slateblue1" , lwd=4 )
+
+# Summary statistics
+# Suppressing unnecessary warnings
+options(warn=-1)
+# Check data quality and basic statistics
+stats  <- psych::describe(timeuse)
+# Check detail descriptive statistics
+stats_detail  <- Hmisc::describe(timeuse)
+
+# explore bivariate relationship using cross table
+gmodels::CrossTable(timeuse$Estimate, timeuse$`Standard Error`, expected = TRUE)
+
+#Printing stats details
+print(stats_detail)
+```
+
+### Step6: Summarize your results and make a conclusion. Explain how you arrived at this conclusion and how your visualizations support your conclusion.
+
+The high Chi value of 256.67 indicates that the data (Estimate and Standard Error) does not fit very well.
+
+We have data between 2011-2021 and instances per each year  for Men/Women.
+
+The estimate is almost an even distribution which is not surprising given the data has men and women in equal proportions.
+
+Standard Error is between 0.058 and 0.088.
+
+The data set has equal weight on gender.
