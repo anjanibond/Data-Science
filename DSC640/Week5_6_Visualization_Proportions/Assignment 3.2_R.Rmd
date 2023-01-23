@@ -1,0 +1,66 @@
+---
+title: "Assignment 3.2"
+author: "Anjani Bonda"
+date: "01/21/2023"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r eval=TRUE, echo=FALSE}
+setwd("/Users/anjanibonda/Data-Science/DSC640/Week5_6_Visualization_Proportions/")
+# Import required packages
+library('magrittr')
+
+# Import data to be used for visualization
+dir = paste(getwd(),'ex3-3',sep = '/')
+file_expenditures = 'expenditures.txt'
+file_unemployement = 'unemployement-rate-1948-2010.csv'
+
+raw_expenditures =  read.table(paste(dir,file_expenditures,sep='/'), header = TRUE, sep = '\t', dec = '.', fill = TRUE)
+
+raw_unemployement = read.csv2(paste(dir,file_unemployement,sep='/'), sep=',', stringsAsFactors = FALSE) %>% 
+    dplyr::mutate(Value = as.numeric(Value)) %>% 
+    as.data.frame()
+
+# Examine data
+print(head(raw_expenditures))
+print(head(raw_unemployement))
+
+```
+
+### Tree Map
+#### Mapping how much each category has costed
+```{r eval=TRUE, echo=FALSE}
+treemap::treemap(raw_expenditures,index = c('category'),
+                 vSize = 'expenditure',
+                 title = 'Expenditure by Category', 
+                 palette = 'RdYlGn')
+```
+
+### Area Chart
+#### Mapping average value over the years, from the unemployment dataset
+```{r eval=TRUE, echo=FALSE}
+avg_unemployement = raw_unemployement %>%
+    dplyr::group_by(Year) %>%
+    dplyr::summarize('Average Value' = mean(Value))
+
+head(avg_unemployement)
+
+ggplot2::ggplot(avg_unemployement, ggplot2::aes(x=Year , y=`Average Value`)) +
+ggplot2::geom_area( fill='blue', alpha=.2) +
+ggplot2::geom_line() +
+ggplot2::ggtitle('Average Value by Year')
+```
+
+### Stacked Area Chart
+#### Mapping the trend of the expenditure of each category over the years.
+```{r eval=TRUE, echo=FALSE}
+ggplot2::ggplot(raw_expenditures, ggplot2::aes(x=year, y=expenditure, fill=category)) + 
+  ggplot2::geom_area()
+```
