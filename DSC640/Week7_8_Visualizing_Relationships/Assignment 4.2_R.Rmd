@@ -1,0 +1,110 @@
+---
+title: "Assignment 4.2"
+author: "Anjani Bonda"
+date: "02/03/2023"
+output:
+  pdf_document: default
+---
+
+```{r eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r eval=TRUE, echo=FALSE}
+setwd("/Users/anjanibonda/Data-Science/DSC640/Week7_8_Visualizing_Relationships/")
+# Import required packages
+library('magrittr')
+ 
+# Set data paths
+dirdata <- 'ex4-2/'
+file1 <- 'crimerates-by-state-2005.csv'
+file2 <- 'life-expectancy.csv'
+file3 <- 'states_detail.xlsx'
+ 
+
+# Load crime rate data
+# Creating additional variable state_cont to convert the unique state variable from categorical to continuous
+crimerate <- read.csv2(paste(dirdata,file1,sep=''), header=TRUE, sep=',', fill=TRUE, stringsAsFactors=FALSE) %>% 
+  dplyr::mutate(murder = as.numeric(murder),
+                forcible_rape = as.numeric(forcible_rape),
+                robbery = as.numeric(robbery),
+                aggravated_assault = as.numeric(aggravated_assault),
+                burglary = as.numeric(burglary),
+                larceny_theft = as.numeric(larceny_theft),
+                motor_vehicle_theft = as.numeric(motor_vehicle_theft),
+                population = as.integer(population),
+                total_crime = murder+
+                  forcible_rape+
+                  robbery+
+                  aggravated_assault+
+                  burglary+
+                  larceny_theft+
+                  motor_vehicle_theft,
+                state_cont = rank(state, ties.method = 'first'))
+
+# Used US State to region mapping
+# Marked the mid west states and rest of USA in the region column in the states_detail.xlsx file
+state_detail <- xlsx::read.xlsx2(paste(dirdata,file3,sep=''),sheetIndex = 1, stringsAsFactors = FALSE)
+
+# Remove USA as a state and add region
+crimerate_states <- crimerate %>% 
+  dplyr::filter(state !='United States')
+
+crimerate_states <- crimerate_states %>% 
+  dplyr::left_join(state_detail, by= c("state"= "full_name"))
+library(dplyr)
+
+crimerate_states <- crimerate_states %>% 
+dplyr::mutate(midwest = case_when(region=='MidWest' ~ 1, region!= 'MidWest' ~ 0))
+
+# Replace NA
+crimerate_states[is.na(crimerate_states)] <- 0
+
+# Load life expectancy data
+lifeexp <- read.csv2(paste(dirdata,file2,sep=''), header=TRUE, sep=',', fill=TRUE, stringsAsFactors=FALSE)
+
+head(crimerate_states)
+head(lifeexp)
+```
+
+### Plot1: Scatter Plot - R
+```{r eval=TRUE, echo=FALSE}
+# Format graph size
+options(repr.plot.width = 5, repr.plot.height = 5)
+
+# Plot
+ggplot2::ggplot(data = crimerate_states) +
+  ggplot2::aes(x = murder, y = robbery) +
+  ggplot2::geom_point(color = "#0c4c8a") +
+  ggplot2::labs(title = "Correlation between Robbery and Murder",
+       x = "Murder",
+       y = "Robbery") +
+  ggplot2::theme_grey()
+```
+
+### Plot2: Bubble Plot - R 
+```{r eval=TRUE, echo=FALSE}
+# Format graph size
+options(repr.plot.width = 7, repr.plot.height = 3)
+
+# Plot
+ggplot2::ggplot(data = crimerate) +
+  ggplot2::aes(x = murder, y = robbery, color = total_crime, size = population) +
+  ggplot2::geom_point() +
+  ggplot2::labs(title = "Relationship between Murder, Robbery, Total Crime and Population") +
+  ggplot2::theme_classic()
+```
+
+### Plot3: Density Plot - R
+```{r eval=TRUE, echo=FALSE}
+# For this I want to compare total crime rate of mid west states to the rest of the states
+crimerate_compare <- crimerate_states[,-1]
+rownames(crimerate_compare) <- crimerate_states[,1]
+
+ggplot2::ggplot(crimerate_compare) +
+  ggplot2::aes(total_crime, fill=as.factor(midwest)) +
+  ggplot2::geom_density(alpha = 0.3) +
+  ggplot2::labs(x='Total Crime', y='Density') +
+  ggplot2::theme_classic() +
+  ggplot2::guides(fill=ggplot2::guide_legend(title="Mid West flag"))
+```

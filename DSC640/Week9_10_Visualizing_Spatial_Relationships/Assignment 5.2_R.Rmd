@@ -1,0 +1,59 @@
+---
+title: "Assignment 5.2"
+author: "Anjani Bonda"
+date: "02/18/2023"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r eval=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r eval=TRUE, echo=FALSE}
+setwd("/Users/anjanibonda/Data-Science/DSC640/Week9_10_Visualizing_Spatial_Relationships/")
+# Import required packages
+library('magrittr') 
+library('ggmap')
+library('ggplot2')
+library('usmap')
+
+ppg <-  read.csv('ex5-2/ppg2008.csv')
+costco <- read.csv('ex5-2/costcos-geocoded.csv')
+
+# Create a statewide store count of Costco
+
+costco_sum <- costco %>% 
+  dplyr::mutate(state = State) %>% 
+  dplyr::group_by(state) %>%
+  dplyr::summarise(store_count = dplyr::n())
+```
+
+### Plot1: Heat Map - R
+```{r eval=TRUE, echo=FALSE}
+heatmap(as.matrix(ppg[,2:ncol(ppg)]))
+```
+
+### Plot2: Spatial Chart - R
+```{r eval=TRUE, echo=FALSE}
+# plot number of Costco stores in states through color intensity
+
+options(repr.plot.width = 4, repr.plot.height = 3)
+
+plot_usmap(data = costco_sum, values = "store_count", lines = "white") + 
+  scale_fill_continuous(name = "Number of Costco Stores (2015)", label = scales::comma) + 
+  theme(legend.position = "right")
+```
+
+### Plot3: Contour Plot - R 
+```{r eval=TRUE, echo=FALSE}
+ggplot(ppg, aes(x=FTM, y=FTA))+
+  theme_bw()+
+  geom_point(alpha=0.1, col='red')+
+  geom_density2d(color='black')+
+  ggtitle('Contour Plot')+
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(x='FTM', y='FTA')
+```
