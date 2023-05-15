@@ -1,0 +1,7 @@
+23/03/19 22:07:59 WARN Utils: Your hostname, ANJANIs-MacBook-Pro-2.local resolves to a loopback address: 127.0.0.1; using 192.168.86.35 instead (on interface en0)
+23/03/19 22:07:59 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+23/03/19 22:08:00 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Pi is roughly 3.139320.
