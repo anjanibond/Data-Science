@@ -2,9 +2,10 @@
 
 ### Projects
 
-#### 1. Employee Attrition Prediction
+#### 1. Tesla Supercharing Stations Prediction
 [Link](https://github.com/anjanibond/Data-Science/tree/main/Portfolio/Project1)
-Employee attrition measures how many workers have left an organization and is common metric companies use to assess their performance. There are often many reasons why employees leave an organization, and in this case study, I explored some of the key drivers of employee attrition.
+Of all the various brands in the current market, Tesla is clearly the market leader not just because of the brand value and design but mostly because of the reliable Tesla supercharging stations. The public charging stations had their share of problems as they sometimes don’t work which is quite frustrating to the EV car owners. One of the key features for prospective EV car buyers is charging stations. I will be exploring more on this aspect where it might be useful for upcoming EV buyers to make purchase based on the charging stations and their possible expansion pattern/prediction. The focus of this model is limited to USA.
+
 
 #### 2. Air Travel Safety
 [Link](https://github.com/anjanibond/Data-Science/tree/main/Portfolio/Project2)
