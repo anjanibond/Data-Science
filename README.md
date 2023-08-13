@@ -7,17 +7,17 @@ Effective team management, coordination, negotiation, and presentation skills.
 Build effective real world data science models for large enterprises.
 
 ## Technical Skills
-• Cloud Technology: AWS Tech Stack, Snowflake, Azure, GCP
-• Databases: Snowflake, Oracle, Teradata, DB2, SQL server
-• ETL Tools: Abinitio, Informatica, Data Stage, Qlik
-• Programming: Python, R, Unix Shell Scripting, Perl
-• CI/CD integration: Github, Nexus, Gradle, Jenkins
-• Microsoft Visual Studio, JIRA Project Management, ServiceNow
-• Reporting/BI: Power BI, Tableau, AtScale
+- Cloud Technology: AWS Tech Stack, Snowflake, Azure, GCP
+- Databases: Snowflake, Oracle, Teradata, DB2, SQL server
+- ETL Tools: Abinitio, Informatica, Data Stage, Qlik
+- Programming: Python, R, Unix Shell Scripting, Perl
+- CI/CD integration: Github, Nexus, Gradle, Jenkins
+- Microsoft Visual Studio, JIRA Project Management, ServiceNow
+- Reporting/BI: Power BI, Tableau, AtScale
 
 ## Education
-Masters in Data Science.
-Bachelors in Mechanical Engineering.
+- Masters in Data Science (Bellevue University)
+- Bachelors in Mechanical Engineering (Andhra University)
 
 ## Data Science Portfolio
 
@@ -68,6 +68,6 @@ Analysis and data visualizations of car data using various sources including kag
 The purpose of this project is to predict the effects of different variables/parameters recorded in the data to predict patient mortality. By predicting so the physicians can determine high risk patients and can take better care of them thereby helping them survive.
 
 ## Contact Info
-Anjani Bonda
-Email: anjanibond@gmail.com
-LinkedIn: https://www.linkedin.com/in/anjani-bond/
+- Anjani Bonda
+- Email: anjanibond@gmail.com
+- LinkedIn: https://www.linkedin.com/in/anjani-bond/
