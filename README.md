@@ -70,4 +70,4 @@ The purpose of this project is to predict the effects of different variables/par
 ### Contact Info
 - Anjani Bonda
 - Email: anjanibond@gmail.com
-- Linkedin: [Link](https://www.linkedin.com/in/anjani-bond/))
+- Linkedin: [Link](https://www.linkedin.com/in/anjani-bond/)
