@@ -1,4 +1,25 @@
-## Anjani Bonda's Data Science Project Portfolio
+## About Me
+Data Engineering and Data Science is my passion!
+Proven expertise to drive end to end data engineering/analytics and business intelligence initiatives at large scale.
+Driving strategy, road map and architecture.
+Delivering performance efficient end to end engineering solutions utilizing emerging technologies.
+Effective team management, coordination, negotiation, and presentation skills.
+Build effective real world data science models for large enterprises.
+
+## Technical Skills
+- Cloud Technology: AWS Tech Stack, Snowflake, Azure, GCP
+- Databases: Snowflake, Oracle, Teradata, DB2, SQL server
+- ETL Tools: Abinitio, Informatica, Data Stage, Qlik
+- Programming: Python, R, Unix Shell Scripting, Perl
+- CI/CD integration: Github, Nexus, Gradle, Jenkins
+- Microsoft Visual Studio, JIRA Project Management, ServiceNow
+- Reporting/BI: Power BI, Tableau, AtScale
+
+## Education
+- Masters in Data Science (Bellevue University)
+- Bachelors in Mechanical Engineering (Andhra University)
+
+## Data Science Portfolio
 
 ### Projects
 
@@ -45,3 +66,8 @@ Analysis and data visualizations of car data using various sources including kag
 #### 10. Predict risk variables for heart patients
 [Link](https://github.com/anjanibond/Data-Science/tree/main/Portfolio/Project10)
 The purpose of this project is to predict the effects of different variables/parameters recorded in the data to predict patient mortality. By predicting so the physicians can determine high risk patients and can take better care of them thereby helping them survive.
+
+## Contact Info
+- Anjani Bonda
+- Email: anjanibond@gmail.com
+- LinkedIn: https://www.linkedin.com/in/anjani-bond/
