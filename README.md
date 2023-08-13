@@ -67,7 +67,7 @@ Analysis and data visualizations of car data using various sources including kag
 [Link](https://github.com/anjanibond/Data-Science/tree/main/Portfolio/Project10)
 The purpose of this project is to predict the effects of different variables/parameters recorded in the data to predict patient mortality. By predicting so the physicians can determine high risk patients and can take better care of them thereby helping them survive.
 
-## Contact Info
+### Contact Info
 - Anjani Bonda
 - Email: anjanibond@gmail.com
-- LinkedIn: https://www.linkedin.com/in/anjani-bond/
+- Linkedin: [Link](https://www.linkedin.com/in/anjani-bond/))
